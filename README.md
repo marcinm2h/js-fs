@@ -1,7 +1,7 @@
 TODO:
 
-- steam with pipeing
 - createserver - own express
+- stream with pipeing
 - upload file multipart
 - video stream + restoring
 - torrent client + server
