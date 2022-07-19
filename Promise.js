@@ -4,12 +4,17 @@ class P {
       resolve(val);
     });
   }
-  state = "pending"; // pending | fulfilled | rejected
+  static reject(error) {
+    return new P((resolve, reject) => {
+      reject(error);
+    });
+  }
+  state = 'pending'; // pending | fulfilled | rejected
   onFullfilled = () => {};
   onReject = () => {};
   constructor(setupFn) {
     const reject = (error) => {
-      this.state = "rejected";
+      this.state = 'rejected';
       setTimeout(() => {
         this.onReject(error);
       }, 0);
@@ -17,8 +22,8 @@ class P {
     const resolve = (val) => {
       setTimeout(() => {
         this.onFullfilled(val);
-      }, 0)
-      this.state = "fulfilled";
+      }, 0);
+      this.state = 'fulfilled';
     };
     setupFn(resolve, reject);
   }
@@ -54,17 +59,17 @@ class P {
 
 new P((resolve, reject) => {
   setTimeout(() => {
-  // reject("new P()");
-  resolve("new P()");
+    // reject("new P()");
+    resolve('new P()');
   }, 100);
 })
   // .catch((e) => console.log("catch", e))
-  .then((x) => console.log("x0", x) || "from x0")
-  .then((x) => console.log("x1", x) || "from x1")
-  .catch((e) => console.log("e1", e))
-  .then((x) => console.log("x2", x.y.z))
-  .catch((e) => console.log("e2 err", e));
+  .then((x) => console.log('x0', x) || 'from x0')
+  .then((x) => console.log('x1', x) || 'from x1')
+  .catch((e) => console.log('e1', e))
+  .then((x) => console.log('x2', x.y.z))
+  .catch((e) => console.log('e2 err', e));
 
-P.resolve("a").then((x) => console.log({ x }));
+P.resolve('a').then((x) => console.log({ x }));
 
-console.log("sync");
+console.log('sync');
