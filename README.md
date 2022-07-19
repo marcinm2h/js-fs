@@ -1,9 +1,8 @@
 TODO:
 
-- createserver - own express
-- stream with pipeing
 - upload file multipart
 - video stream + restoring
+- stream with pipeing
 - torrent client + server
 - express - good ddd crud with django inspired architecture
 - typescript on server
