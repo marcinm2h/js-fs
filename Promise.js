@@ -1,18 +1,26 @@
 class P {
+  static resolve(val) {
+    return new P((resolve) => {
+      resolve(val);
+    });
+  }
   state = "pending"; // pending | fulfilled | rejected
   onFullfilled = () => {};
   onReject = () => {};
   constructor(setupFn) {
     const reject = (error) => {
       this.state = "rejected";
-      this.onReject(error);
+      setTimeout(() => {
+        this.onReject(error);
+      }, 0);
     };
     const resolve = (val) => {
-      this.onFullfilled(val);
+      setTimeout(() => {
+        this.onFullfilled(val);
+      }, 0)
       this.state = "fulfilled";
     };
     setupFn(resolve, reject);
-    return this;
   }
   then(onFullfilled) {
     this.onFullfilled = onFullfilled;
@@ -46,13 +54,17 @@ class P {
 
 new P((resolve, reject) => {
   setTimeout(() => {
-    // reject("new P()");
-    resolve("new P()");
+  // reject("new P()");
+  resolve("new P()");
   }, 100);
 })
-  .catch((e) => console.log("catch", e))
+  // .catch((e) => console.log("catch", e))
   .then((x) => console.log("x0", x) || "from x0")
   .then((x) => console.log("x1", x) || "from x1")
   .catch((e) => console.log("e1", e))
   .then((x) => console.log("x2", x.y.z))
   .catch((e) => console.log("e2 err", e));
+
+P.resolve("a").then((x) => console.log({ x }));
+
+console.log("sync");
