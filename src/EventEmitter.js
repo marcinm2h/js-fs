@@ -1,4 +1,4 @@
-class EE {
+class EventEmitter {
   state = {};
   on(eventName, handler) {
     if (!this.state[eventName]) {
@@ -20,4 +20,4 @@ class EE {
   }
 }
 
-module.exports = { EE };
+module.exports = { EventEmitter };

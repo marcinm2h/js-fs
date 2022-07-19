@@ -1,11 +1,11 @@
-class P {
+class Promise {
   static resolve(val) {
-    return new P((resolve) => {
+    return new Promise((resolve) => {
       resolve(val);
     });
   }
   static reject(error) {
-    return new P((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       reject(error);
     });
   }
@@ -29,7 +29,7 @@ class P {
   }
   then(onFullfilled) {
     this.onFullfilled = onFullfilled;
-    const p = new P((resolve, reject) => {
+    const p = new Promise((resolve, reject) => {
       const onFullfilledPrev = this.onFullfilled;
       this.onFullfilled = (val) => {
         try {
@@ -44,7 +44,7 @@ class P {
   }
   catch(onReject) {
     this.onReject = onReject;
-    return new P((resolve) => {
+    return new Promise((resolve) => {
       this.onFullfilled = (val) => {
         resolve(val);
       };
@@ -57,4 +57,4 @@ class P {
   }
 }
 
-module.exports = { P };
+module.exports = { Promise };

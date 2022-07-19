@@ -1,9 +1,9 @@
-const { EE } = require('../EventEmitter');
+const { EventEmitter } = require('../EventEmitter');
 
 test('EventEmitter', () => {
   const mock = jest.fn();
 
-  const ee = new EE();
+  const ee = new EventEmitter();
   ee.on('evt', mock);
   ee.trigger('evt', ['a', 'b']);
   ee.off('evt', mock);

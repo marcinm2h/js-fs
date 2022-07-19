@@ -1,4 +1,4 @@
-const { P } = require('../Promise');
+const { Promise } = require('../Promise');
 
 // new P((resolve, reject) => {
 //   setTimeout(() => {
@@ -18,7 +18,7 @@ const { P } = require('../Promise');
 // console.log('sync');
 
 test('Promise', () => {
-  return P.resolve('test').then((data) => {
+  return Promise.resolve('test').then((data) => {
     expect(data).toBe('test');
   });
 });
