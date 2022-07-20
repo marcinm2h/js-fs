@@ -5,6 +5,16 @@ const path = require('node:path');
 
 const relativePath = (relative) => path.join(__dirname, relative);
 
+const parseContentType = (contentType) => {
+  return {
+    boundary: contentType
+      .split(';')
+      .map((x) => x.trim())
+      .find((x) => x.includes('boundary'))
+      .replace('boundary=', ''),
+  };
+};
+
 function handleRoot(req, res) {
   console.log('GET /');
   readFile(relativePath('index.html'))
@@ -21,9 +31,24 @@ function handleRoot(req, res) {
 }
 
 function handleUpload(req, res) {
-  // FIXME: get original file name and type & handle errors
   const file = fs.createWriteStream(relativePath('./example.pdf'));
+  const { boundary } = parseContentType(req.headers['content-type']);
+
   req.on('data', (chunk) => {
+    // FIXME: get name and type from content-disposition
+    // boundaryBuff = toBuffer(boundary) -> removeBuffer(chunk, boundaryBuff)
+    console.log(chunk.toString());
+    //     ------WebKitFormBoundaryWU4sApm8H2y03j3W
+    // Content-Disposition: form-data; name="upload"; filename="test.txt"
+    // Content-Type: text/plain
+
+    // test
+
+    // ------WebKitFormBoundaryWU4sApm8H2y03j3W
+    // Content-Disposition: form-data; name="other"
+
+    // other
+    // ------WebKitFormBoundaryWU4sApm8H2y03j3W--
     file.write(chunk);
   });
   req.on('end', () => {
