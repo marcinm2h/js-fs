@@ -1,6 +1,5 @@
 TODO:
 
-- upload file multipart
 - video stream + restoring
 - stream with pipeing
 - torrent client + server
