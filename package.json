@@ -4,6 +4,8 @@
   "author": "marcinm2h",
   "license": "none",
   "devDependencies": {
+    "eslint": "^8.20.0",
+    "eslint-plugin-jest": "^26.6.0",
     "husky": "^8.0.1",
     "jest": "^28.1.3",
     "lint-staged": "^13.0.3",
@@ -14,6 +16,7 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "scripts": {
+    "lint": "eslint",
     "test": "jest",
     "prepare": "husky install"
   }

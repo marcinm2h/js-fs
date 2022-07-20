@@ -29,7 +29,7 @@ class Promise {
   }
   then(onFullfilled) {
     this.onFullfilled = onFullfilled;
-    const p = new Promise((resolve, reject) => {
+    const p = new Promise((resolve) => {
       const onFullfilledPrev = this.onFullfilled;
       this.onFullfilled = (val) => {
         try {

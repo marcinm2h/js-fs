@@ -33,6 +33,7 @@ function handleRoot(req, res) {
 function handleUpload(req, res) {
   const file = fs.createWriteStream(relativePath('./example.pdf'));
   const { boundary } = parseContentType(req.headers['content-type']);
+  console.log({ boundary });
 
   req.on('data', (chunk) => {
     // FIXME: get name and type from content-disposition
