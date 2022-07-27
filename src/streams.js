@@ -21,6 +21,8 @@ class MyReadableStream extends Stream.Readable {
 
 const readableStream = new MyReadableStream();
 
+readableStream.pipe(process.stdout);
+
 readableStream.on('data', (buffer) => {
   console.log('readableStream::data', buffer.toString());
 });
