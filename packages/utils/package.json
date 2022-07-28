@@ -1,0 +1,15 @@
+{
+  "name": "@marcinm2h/utils",
+  "version": "1.0.0",
+  "author": "marcinm2h",
+  "license": "none",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcinm2h/js-fs.git"
+  },
+  "homepage": "https://github.com/marcinm2h/js-fs/packages/utils/#readme",
+  "devDependencies": {},
+  "scripts": {
+    "build": "cp src/index.js ./index.js"
+  }
+}

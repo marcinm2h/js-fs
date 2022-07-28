@@ -1,6 +1,8 @@
 const path = require('path');
 const http = require('http');
 const fs = require('fs');
+const { createLogger } = require('@marcinm2h/utils');
+const logger = createLogger('video');
 
 const public = (parts) =>
   path.join(__dirname, 'public', ...(Array.isArray(parts) ? parts : [parts]));
@@ -13,7 +15,7 @@ const server = http.createServer((req, res) => {
     if (!range) {
       return fs.createReadStream(public('video.mp4')).pipe(res);
     }
-    console.log({ range });
+    logger.log({ range });
     // { range: 'bytes=1081344-' }
     const MAX_CHUNK_SIZE = 10 ** 6;
     const videoSize = fs.statSync(public('video.mp4')).size;
@@ -37,5 +39,5 @@ const server = http.createServer((req, res) => {
 const port = process.env.PORT || 8909;
 
 server.listen(port, null, () => {
-  console.log(`⚡ server started at port ${port}`);
+  logger.log(`⚡ server started at port ${port}`);
 });
