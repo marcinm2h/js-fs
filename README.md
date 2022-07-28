@@ -1,6 +1,5 @@
 TODO:
 
-- video stream + restoring + pipeing
 - npm workspaces https://docs.npmjs.com/cli/v7/using-npm/workspaces
 - SSR with hydrate / SSG (vanilajs / solidJS/ react)
 - express - good ddd crud with django inspired architecture + form with validators
