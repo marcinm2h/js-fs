@@ -5,7 +5,7 @@
     "type": "git",
     "url": "git+https://github.com/marcinm2h/js-fs.git"
   },
-  "author": "Marcin Moch",
+  "author": "marcinm2h",
   "license": "none",
   "dependencies": {
     "@vitejs/plugin-react": "^2.2.0",
