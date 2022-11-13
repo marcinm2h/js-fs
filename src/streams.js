@@ -1,34 +1,15 @@
 const Stream = require('stream');
 
-class MyReadableStream extends Stream.Readable {
-  dataToStream = ['one', 'two', 'three'];
-
-  constructor(options) {
-    super(options);
-  }
-
-  _read() {
-    if (this.dataToStream.length === 0) {
-      return this.push(null);
-    }
-    this.push(this.dataToStream.shift());
-  }
-
-  _destroy() {
-    this.dataToStream = [];
-  }
-}
-
-const readableStream = new MyReadableStream();
-
-readableStream.pipe(process.stdout);
-
-readableStream.on('data', (buffer) => {
-  console.log('readableStream::data', buffer.toString());
+const inStream = new Stream.Readable({
+  read() {},
 });
 
-readableStream.on('data', (buffer) => {
-  console.log('second listener', buffer.toString('utf-8'));
-});
+inStream.pipe(process.stdout);
 
-readableStream.push('log me');
+inStream.push('ABCDEFGHIJKLM');
+inStream.push('NOPQRSTUVWXYZ');
+
+setTimeout(() => {
+  inStream.push('delayed');
+  inStream.push(null);
+}, 1000);

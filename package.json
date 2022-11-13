@@ -39,6 +39,7 @@
   },
   "workspaces": [
     "packages/utils",
-    "apps/react-ssr-app"
+    "apps/react-ssr-app",
+    "apps/server"
   ]
 }
