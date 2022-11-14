@@ -1,7 +1,7 @@
 ```sh
-▶ npx nodemon src/video-streaming-server/index.js
+npx nodemon src/video-streaming-server/index.js
 ```
 
 ```sh
-▶ npm run build --workspace=@marcinm2h/utils
+npm run build --workspace=@marcinm2h/utils
 ```
