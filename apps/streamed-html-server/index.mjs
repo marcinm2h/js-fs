@@ -1,20 +1,26 @@
 import { Readable } from 'node:stream';
 import { EventEmitter } from 'node:events';
 import express from 'express';
+import bodyParser from 'body-parser';
 
 const app = express();
 
+const users = [
+  { login: 'mm', name: 'Marcin', pw: 'mm' },
+  { login: 'adm', name: 'Admin', pw: 'adm' },
+];
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const eventBus = new EventEmitter();
 
-app.get('/test', (req, res) => {
-  res.send(`
-    <details>
-      <summary>
-        <h1>Todo list:</h1>
-      </summary>
-      <img src="http://placekitten.com/200/300" loading="lazy"/>
-    </details>
-  `);
+app.post('/login', (req, res) => {
+  const { sid } = req.query;
+  const { login, pw } = req.body;
+  const user = users.find((user) => user.login === login && user.pw === pw);
+  eventBus.emit('login', { sid, data: { name: user.name } });
+
+  res.send('Go back');
 });
 
 app.get('/response', (req, res) => {
@@ -46,6 +52,24 @@ app.get('/:sid', (req, res) => {
     res.end();
   });
 
+  eventBus.on('login', (resp) => {
+    if (resp.sid !== sid) {
+      return;
+    }
+
+    inStream.push(`
+      <div>
+        <p>Logged in as ${resp.data.name}</p>
+      </div>
+      <style>
+        #form, #question {
+          display: none;
+        }
+      </style>
+    `);
+    inStream.push(null);
+  });
+
   eventBus.on('response', (resp) => {
     if (resp.sid !== sid) {
       return;
@@ -56,7 +80,7 @@ app.get('/:sid', (req, res) => {
         <p>You've chosen ${resp.data}</p>
       </div>
       <style>
-        #question {
+        #form, #question {
           display: none;
         }
       </style>
@@ -75,6 +99,18 @@ app.get('/:sid', (req, res) => {
         <summary>two</summary>
         <img src="/response?sid=${sid}&data=2" loading="lazy" style="visibility:hidden" />
       </details>
+    </div>
+    <div id="form">
+    <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+      <form id="form" action="/login?sid=${sid}" method="POST" target="dummyframe">
+        <label>
+          login: <input name="login" />
+        </label>
+        <label>
+          password: <input name="pw" type="password" />
+        </label>
+        <input type="submit" />
+      </form>
     </div>
   `);
 });
