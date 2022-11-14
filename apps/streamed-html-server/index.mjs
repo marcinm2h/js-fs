@@ -6,6 +6,17 @@ const app = express();
 
 const eventBus = new EventEmitter();
 
+app.get('/test', (req, res) => {
+  res.send(`
+    <details>
+      <summary>
+        <h1>Todo list:</h1>
+      </summary>
+      <img src="http://placekitten.com/200/300" loading="lazy"/>
+    </details>
+  `);
+});
+
 app.get('/response', (req, res) => {
   const { sid, data } = req.query;
   eventBus.emit('response', { sid, data });
@@ -44,15 +55,26 @@ app.get('/:sid', (req, res) => {
       <div>
         <p>You've chosen ${resp.data}</p>
       </div>
+      <style>
+        #question {
+          display: none;
+        }
+      </style>
     `);
     inStream.push(null);
   });
 
   inStream.push(`
-    <div>
+    <div id="question">
       <p>one or two?</p>
-      <a href="/response?sid=${sid}&data=1" target="_blank" rel="noopener noreferrer">one</a>
-      <a href="/response?sid=${sid}&data=2" target="_blank" rel="noopener noreferrer">two</a>
+      <details>
+        <summary>one</summary>
+        <img src="/response?sid=${sid}&data=1" loading="lazy" style="visibility:hidden" />
+      </details>
+      <details>
+        <summary>two</summary>
+        <img src="/response?sid=${sid}&data=2" loading="lazy" style="visibility:hidden" />
+      </details>
     </div>
   `);
 });
