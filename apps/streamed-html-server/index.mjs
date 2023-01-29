@@ -5,10 +5,7 @@ import bodyParser from 'body-parser';
 
 const app = express();
 
-const users = [
-  { login: 'mm', name: 'Marcin', pw: 'mm' },
-  { login: 'adm', name: 'Admin', pw: 'adm' },
-];
+const users = [{ login: 'adm', name: 'Admin', pw: 'adm' }];
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -18,7 +15,10 @@ app.post('/login', (req, res) => {
   const { sid } = req.query;
   const { login, pw } = req.body;
   const user = users.find((user) => user.login === login && user.pw === pw);
-  eventBus.emit('login', { sid, data: { name: user.name } });
+  eventBus.emit(
+    'login',
+    user ? { sid, data: { name: user.name } } : { sid, data: null },
+  );
 
   res.send('Go back');
 });
@@ -31,7 +31,8 @@ app.get('/response', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.redirect('/1'); // FIXME: random
+  const randomSid = Math.floor(Math.random() * (10000 - 1 + 1) + 1);
+  res.redirect(`/${randomSid}`);
 });
 
 app.get('/:sid', (req, res) => {
@@ -56,13 +57,29 @@ app.get('/:sid', (req, res) => {
     if (resp.sid !== sid) {
       return;
     }
+    if (!resp.data) {
+      inStream.push(`
+        <div>
+          <p class="login-error">Wrong login or password</p>
+        </div>
+        <style>
+          .login-error {
+            display: none;
+          }
+          #form + div .login-error {
+              display: block;
+          }
+        </style>
+      `);
+      return;
+    }
 
     inStream.push(`
       <div>
         <p>Logged in as ${resp.data.name}</p>
       </div>
       <style>
-        #form, #question {
+        #form, #question, #form + div .login-error {
           display: none;
         }
       </style>
@@ -80,7 +97,7 @@ app.get('/:sid', (req, res) => {
         <p>You've chosen ${resp.data}</p>
       </div>
       <style>
-        #form, #question {
+      #form, #question, #form + div .login-error {
           display: none;
         }
       </style>
